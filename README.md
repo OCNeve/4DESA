@@ -15,16 +15,14 @@ where python
 ```
 _locate diffrent python executables, choose a python executable that is at least in version **3.12.0**_
 ```cmd
-where python
+{python3.12_executable_path}\python.exe -m pip install poetry 
 ```
 _install poetry_
 ```cmd
-{python3.12_executable_path}\python.exe -m pip install poetry 
-```
-_install virtual env and packages with **poetry**_
-```cmd
 {python3.12_executable_path}\python.exe -m poetry install
 ```
+_install virtual env and packages with **poetry**_
+
 
 ## Poetry's workflow
 Poetry is used in this project to handle virtual environments and index requirements precisely. 
@@ -63,5 +61,4 @@ Basicly the opposite of adding a package.
 
 
 **Have fun and never use venv, pipenv or any other crap like that again!**
-
 
