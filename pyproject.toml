@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "4desa"
+version = "0.1.0"
+description = "A super project for supinfo"
+authors = ["olivier neve, maxime brianne, alex alkhatib"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.0.1"
+sqlalchemy = "^2.0.25"
+psycopg2 = "^2.9.9"
+sqlalchemy-utils = "^0.41.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
