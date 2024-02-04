@@ -1,0 +1,5 @@
+FROM postgres:16.1
+
+EXPOSE 5432:5432
+
+ENV POSTGRES_PASSWORD="postgres"

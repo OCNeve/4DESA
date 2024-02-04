@@ -44,7 +44,7 @@ Just like you would `pip install` some package, you can `poetry add` them.
 ```cmd
 {python3.12_executable_path}\python.exe -m poetry add {some_package}
 ```
-This has the added beninfit of updating the porject manifests (`pyproject.toml`/`poetry.lock`) and takes into account the current project dependencies when installing one version on the desired packege over an other.
+This has the added beninfit of updating the porject manifests (`pyproject.toml` & `poetry.lock`) and takes into account the current project dependencies when installing one version on the desired packege over an other.
 
 ### remove a package
 Basicly the opposite of adding a package.
