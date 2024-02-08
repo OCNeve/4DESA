@@ -115,28 +115,28 @@ def add_posts(request):
         date = datetime.now()
 
         try:
-            with open("image.png", "wb") as video_file:
+            with open(str(request.FILES['video'].name), "wb") as video_file:
                 for chunk in request.FILES['video'].chunks():
                     video_file.write(chunk)
 
-            with open("video.mp4", "wb") as image_file:
+            with open(str(request.FILES['image'].name), "wb") as image_file:
                 for chunk in request.FILES['image'].chunks():
                     image_file.write(chunk)
 
             saa = SAA()
-            video_url = saa.uploadFile("video.mp4")
-            image_url = saa.uploadFile("image.png")
+            video_url = saa.uploadFile(str(request.FILES['video']), user.username)
+            image_url = saa.uploadFile(str(request.FILES['image']), user.username)
 
-            os.remove("video.mp4")
-            os.remove("image.png")
+            os.remove(str(request.FILES['video'].name))
+            os.remove(str(request.FILES['image'].name))
 
-        except:
-            return
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
         post_text = request.headers.get("post-text")
         post = Posts.objects.create(creator=user, date=date, text=post_text)
-        image = Images.objects.create(post=post, path=image_path)
-        video = Videos.objects.create(post=post, path=video_path)
+        image = Images.objects.create(post=post, path=video_url)
+        video = Videos.objects.create(post=post, path=image_url)
         post.save()
         image.save()
         video.save()
@@ -145,22 +145,24 @@ def add_posts(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
 
-    @csrf_exempt
-    def upload_file(request):
-        if request.method != 'POST':
-            return JsonResponse({'error': 'Bad Method'}, status=405)
 
-        try:
-            uploaded_file = request.FILES['file']
-            # Assuming you have a field named 'file' in your HTML form for file upload
+def add_comment(request):
 
-            # Process the uploaded file
-            # For example, you can save the file to a specific location
-            # Make sure to handle file name conflicts, etc.
-            with open('path/to/your/uploaded/file', 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+    if request.method != "POST":
+        return JsonResponse(CustomMessage.get("unsuccessful", "Bad Method"))
+    try:
+        token = request.headers.get("token")
+    except:
+        return JsonResponse(CustomMessage.get("unsuccessful", "you must provide a token as a header variable"))
 
-            return JsonResponse({'success': 'File uploaded successfully'}, status=201)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+    try:
+        _id = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])["id"]
+    except:
+        return JsonResponse(CustomMessage.get("unsuccessful", "invalid token"))
+
+    profile, _ = Profile.objects.get_or_create(user=user)
+    if profile.is_public:
+
+        return JsonResponse(CustomMessage.get("successful", None, data=data), safe=False)
+    else:
+        return JsonResponse(CustomMessage.get("unsuccessful", "requested profile is private"))

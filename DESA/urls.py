@@ -23,6 +23,6 @@ urlpatterns = [
     path('signup/', include("signup.urls")),
     path('profile/', include("_profile.urls")),
     path('search/', include("search.urls")),
-    path('upload/', include("upload.urls")),
     path('posts/', include("posts.urls")),
+    path('comments/', include("comments.urls")),
 ]
